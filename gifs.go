@@ -62,8 +62,8 @@ type ImportResponse struct {
 	} `json:"meta"`
 }
 
-func (r *ImportResponse) SaveGif() string {
-	file := DownloadFile("newgif.gif", r.Files.Gif)
+func (r *ImportResponse) SaveGif(title string) string {
+	file := DownloadFile(title, r.Files.Gif)
 	return file
 }
 
@@ -131,17 +131,15 @@ func (i *New) Upload() (*ImportResponse, error) {
 
 }
 
-func UploadRequest(i *New, fileName string) ([]byte, error) {
-	path, _ := os.Getwd()
-	path += "/" + fileName
-	file, err := os.Open(path)
+func UploadRequest(i *New, filePath string) ([]byte, error) {
+	file, err := os.Open(filePath)
 	if err != nil {
 		return nil, err
 	}
 	defer file.Close()
 	body := &bytes.Buffer{}
 	writer := multipart.NewWriter(body)
-	part, err := writer.CreateFormFile("file", filepath.Base(path))
+	part, err := writer.CreateFormFile("file", filepath.Base(filePath))
 	if err != nil {
 		return nil, err
 	}
