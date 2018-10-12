@@ -63,7 +63,7 @@ type ImportResponse struct {
 }
 
 func (r *ImportResponse) SaveGif(title string) string {
-	file := DownloadFile(title, r.Files.Gif)
+	file := DownloadFile(title+".gif", r.Files.Gif)
 	return file
 }
 
